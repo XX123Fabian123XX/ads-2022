@@ -14,7 +14,7 @@ public class Main {
 
             for(int i = 0; i < numberArray.length; i++) {
                 for(int j = i; j < numberArray.length; j++) {
-                    int summe = 0;
+                    long summe = 0;
                     for(int k = i; k <= j; k++) {
                         summe += numberArray[k];
                         anzahlAdditionen++;
@@ -47,6 +47,9 @@ public class Main {
         while(isRunning) {
             System.out.println("Bitte geben sie den Dateinamen ein!");
             String filename =  scanner.nextLine();
+
+            if (filename.equals("")) continue;
+
             path = Paths.get(filename);
 
             if (!Files.exists(path)) {
