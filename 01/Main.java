@@ -10,7 +10,7 @@ public class Main {
 
             long startTime = System.currentTimeMillis();
             long maxSumme = 0;
-            int von = 0, bis = 0, anzahlAdditionen = 0;
+            long von = 0, bis = 0, anzahlAdditionen = 0;
 
             for(int i = 0; i < numberArray.length; i++) {
                 for(int j = i; j < numberArray.length; j++) {
