@@ -1,0 +1,15 @@
+2.1) O(n)
+2.2) O(n)
+2.3) O(f(n) * n)
+2.4) 2 ->1, 4 -> 2, 8 -> 3, 16 -> aufgerundet (log(n) mit basis 2)
+2.5) 27 -> 4 bzw. 5, 173 -> 7 bzw. 8, 291 -> 8 bzw. 9 aufgerundet(log(n) mit basis 2)
+2.6) log(n) mit basis aufgerundet
+2.7) 2n - 1 -> weglassen des faktors, dann kommt man auf n
+2.8) insgesamt wird die funktion maxTeilSumme 2n - 1 mal aufgerufen -> in jedem funktionsaufruf wird eine Funktion mit O(n) aufgerufen -> O((2n-1) * n) -> O(n^2)
+2.9) O(f(n) * g(n)) f(n) -> die Anzahl der rekursiven Funktionsaufrufe, g(n) -> die Laufzeit der Funktion an sich
+O(f(n)) = n ->  O(n * g(n))
+
+
+
+
+ 
