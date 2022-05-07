@@ -1,0 +1,14 @@
+A A A A Q A A A 
+A Q A A A A A A 
+A A A Q A A A A 
+A A A A A A Q A 
+A A Q A A A A A 
+A A A A A A A Q 
+A A A A A Q A A 
+Q A A A A A A A 
+number of queens: 8
+queens: [(0, 4), (1, 1), (2, 3), (3, 6), (4, 2), (5, 7), (6, 5), (7, 0)]
+cursors: (7, 0)
+all_queens_placed: True
+board is still achievable True 
+number of empty spots 0
