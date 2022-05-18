@@ -9,11 +9,11 @@ class Queue:
 
     def dequeue(self) -> str:
         # Simple implementation
-        return self.internalArr.pop(0)
+        # return self.internalArr.pop(0)
         # Complex
-        # retVal = self.internalArr[0]
-        # self.internalArr = self.internalArr[1:]
-        # return retVal
+        retVal = self.internalArr[0]
+        self.internalArr = self.internalArr[1:]
+        return retVal
 
     def first(self) -> str:
         return self.internalArr[0]
@@ -49,9 +49,10 @@ while command != "q":
     elif command == "e":
         val = input("Eingabewert: ")
         newQueue.enqueue(val)
+        print("Enqueued \""+val+"\"")
     elif command == "d":
-        print(newQueue.dequeue())
+        print("Dequeued \""+newQueue.dequeue()+"\"")
     elif command == "f":
-        print(newQueue.first())
+        print("First element is: \""+newQueue.first()+"\"")
     elif command == "i":
-        print(newQueue.isempty())
+        print("Queue is empty? "+str(newQueue.isempty()))

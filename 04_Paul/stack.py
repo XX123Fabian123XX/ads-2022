@@ -9,11 +9,11 @@ class Stack:
 
     def pop(self) -> str:
         # Simple implementation
-        return self.internalArr.pop(-1)
+        # return self.internalArr.pop(-1)
         # Complex
-        # retVal = self.internalArr[-1]
-        # self.internalArr = self.internalArr[0:-1]
-        # return retVal
+        retVal = self.internalArr[-1]
+        self.internalArr = self.internalArr[0:-1]
+        return retVal
 
     def top(self) -> str:
         return self.internalArr[-1]
@@ -51,8 +51,8 @@ while command != "q":
         newStack.push(val)
         print("Pushed!")
     elif command == "o":
-        print(newStack.pop())
+        print("Poped: \""+newStack.pop()+"\"")
     elif command == "t":
-        print(newStack.top())
+        print("Top value: \""+newStack.top()+"\"")
     elif command == "i":
-        print(newStack.isempty())
+        print("Stack is empty? "+str(newStack.isempty()))
