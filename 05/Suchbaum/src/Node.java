@@ -2,7 +2,7 @@
 /**
  * A node for a tree
  */
-public class Node<T> {
+public class Node<T> implements Comparable<Node<T>> {
     private T value;
     private Node<T> rightChild;
     private Node<T> leftChild;
@@ -48,4 +48,9 @@ public class Node<T> {
         return this.value.toString();
     }
 
+    public int compareTo(Node<T> node) {
+        Integer first = (Integer) this.value;
+        Integer second = (Integer) node.getValue();
+        return first.compareTo(second);
+    }
 }
