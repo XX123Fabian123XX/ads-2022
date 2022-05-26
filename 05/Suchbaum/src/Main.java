@@ -2,23 +2,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String args[]) {
-        Tree<String> tree1 = new Tree<>(new Node<String>("tree1"));
-        Tree<String> tree2 = new Tree<>(new Node<String>("tree2"));
-
-        Tree<String> tree3 = new Tree<>(new Node<String>("tree3"));
-        Tree<String> tree4 = new Tree<>(new Node<String>("tree3"));
-
-        Tree<Integer> tree5 = new Tree<>(new Node<Integer>(100));
-        Node<String> testNode = new Node<>("join Tree");
-
-        Tree<String> joinedTree = Tree.<String>bin(tree1, testNode, tree2);
-
         //Task 3
-        Node<Integer> root = new Node<>(50);
-        Tree<Integer> leftTree = new Tree<>(new Node<Integer>(25));
-        Tree<Integer> rightTree = new Tree<>(new Node<Integer>(75));
+        Tree<Integer> searchTree = new Tree<>(null);
 
-        Tree<Integer> searchTree = Tree.<Integer>bin(leftTree, root, rightTree);
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please choose an action");
         System.out.println("i: insert node");

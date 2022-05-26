@@ -9,8 +9,20 @@ public class Tree<T> {
         }
 
         public static <T> Tree<T> bin(Tree<T> leftTree, Node<T> node, Tree<T> rightTree) {
-            node.setLeftChild(leftTree.getRootNode());
-            node.setRightChild(rightTree.getRootNode());
+            if (node == null) return null;
+
+            if (leftTree == null) {
+                node.setLeftChild(null);
+            } else {
+                node.setLeftChild(leftTree.getRootNode());
+            }
+
+            if (rightTree == null) {
+                node.setRightChild(null);
+            } else {
+                node.setRightChild(rightTree.getRootNode());
+            }
+
             return new Tree<T>(node);
         }
 
@@ -69,7 +81,7 @@ public class Tree<T> {
             if(tree == null)
                 return;
             inOrder(tree.left());
-            System.out.println(tree.value());
+            printDetails(tree);
             inOrder(tree.right());
         }
 

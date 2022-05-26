@@ -20,8 +20,6 @@ public class TreeAxiomsTest {
         testNode = new Node<>("join Tree");
     }
 
-
-
     @Test
     public void leftTest() {
         Tree<String> joinedTree = Tree.<String>bin(tree1, testNode, tree2);
@@ -52,5 +50,29 @@ public class TreeAxiomsTest {
         Tree<String> joinedTree = Tree.<String>bin(tree1, testNode, tree2);
         assertFalse(joinedTree.isEmpty());
     }
+
+    @Test
+    public void binTest1() {
+        Tree<String> joinedTree = Tree.<String>bin(null, null, null);
+
+        assertEquals(null, joinedTree);
+    }
+
+    @Test
+    public void binTest2() {
+        Tree<String> joinedTree = Tree.<String>bin(null, testNode, null);
+
+        assertEquals(null, joinedTree.getRootNode().getRightChild());
+        assertEquals(null, joinedTree.getRootNode().getLeftChild());
+    }
+
+    @Test
+    public void binTest3() {
+        Tree<String> joinedTree = Tree.<String>bin(null, testNode, tree2);
+
+        assertEquals(tree2, joinedTree.right());
+        assertEquals(null, joinedTree.left());
+    }
+
 
 }
