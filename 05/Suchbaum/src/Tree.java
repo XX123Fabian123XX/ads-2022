@@ -43,59 +43,59 @@ public class Tree<T> {
             return this.rootNode;
         }
 
-        private void preOrder(Node<T> node) {
-            if(node == null) {
+        private void preOrder(Tree<T> tree) {
+            if(tree == null) {
                 return;
             }
-            printDetails(node);
-            preOrder(node.getLeftChild());
-            preOrder(node.getRightChild());
+            printDetails(tree);
+            preOrder(tree.left());
+            preOrder(tree.right());
         }
 
         /**
          * wrapper to start recursive function
          */
         public void preOrder() {
-            preOrder(this.rootNode);
+            preOrder(this);
         }
 
-        private void printDetails(Node<T> node) {
-            System.out.print(node + "(" + getHeight(node) + "," + getBalance(node) + ") : ");
-            System.out.print(node.getLeftChild() != null ? node.getLeftChild() + "(" + getHeight(node.getLeftChild()) + "," + getBalance(node.getLeftChild()) + "), " : "null,");
-            System.out.print(node.getRightChild() != null ? node.getRightChild() + "(" + getHeight(node.getRightChild()) + "," + getBalance(node.getRightChild()) + ")\n" : "null\n");
+        private void printDetails(Tree<T> tree) {
+            System.out.print(tree.value() + "(" + getHeight(tree) + "," + getBalance(tree) + ") : ");
+            System.out.print(tree.left() != null ? tree.left() + "(" + getHeight(tree.left()) + "," + getBalance(tree.left()) + "), " : "null,");
+            System.out.print(tree.right() != null ? tree.right() + "(" + getHeight(tree.right()) + "," + getBalance(tree.right()) + ")\n" : "null\n");
         }
 
-        private void inOrder(Node<T> node) {
-            if(node == null)
+        private void inOrder(Tree<T> tree) {
+            if(tree == null)
                 return;
-            inOrder(node.getLeftChild());
-            System.out.println(node);
-            inOrder(node.getRightChild());
+            inOrder(tree.left());
+            System.out.println(tree.value());
+            inOrder(tree.right());
         }
 
         /**
          * wrapper to start recursive function
          */
         public void inOrder() {
-            inOrder(this.rootNode);
+            inOrder(this);
         }
 
-        private int getHeight(Node<T> node) {
-            if(node == null) {
+        private int getHeight(Tree<T> tree) {
+            if(tree == null || tree.value() == null) {
                 return 0;
             }
-            int leftTHeight = getHeight(node.getLeftChild());
-            int rightTHeight = getHeight(node.getRightChild());
+            int leftTHeight = getHeight(tree.left());
+            int rightTHeight = getHeight(tree.right());
             return Math.max(leftTHeight, rightTHeight) + 1;
         }
 
-        private int getBalance(Node<T> node) {
-            return getHeight(node.getLeftChild()) - getHeight(node.getRightChild());
+        private int getBalance(Tree<T> tree) {
+            return getHeight(tree.left()) - getHeight(tree.right());
         }
 
         public void insert(T value) {
             Node<T> newNode = new Node<>(value);
-            Node<T> node = this.rootNode;
+            Tree<T> tree = this;
             
             // if tree is empty (start with rootNode)
             if(this.isEmpty()) {
@@ -104,22 +104,22 @@ public class Tree<T> {
             }
             // search for place to insert and insert it (not if key already existing)
             while(true) {
-                if(node.compareTo(newNode) <= -1) {
-                    if(node.getRightChild() == null) {
-                        node.setRightChild(newNode);
+                if(tree.value().compareTo(newNode) <= -1) {
+                    if(tree.right() == null) {
+                        tree.value().setRightChild(newNode);
                         return;
                     }
                     else {
-                        node = node.getRightChild();
+                        tree = tree.right();
                     }
                 }
-                else if(node.compareTo(newNode) >= 1) {
-                    if(node.getLeftChild() == null) {
-                        node.setLeftChild(newNode);
+                else if(tree.value().compareTo(newNode) >= 1) {
+                    if(tree.left() == null) {
+                        tree.value().setLeftChild(newNode);
                         return;
                     }
                     else {
-                        node = node.getLeftChild();
+                        tree = tree.left();
                     }
                     
                 }
@@ -132,56 +132,64 @@ public class Tree<T> {
 
         public void modify(T searchKey, T newKey) {
             Node<T> modifyNode = new Node<>(searchKey);
-            Node<T> node = this.rootNode;
+            Tree<T> tree = this;
+
+            if(tree.value() == null) {
+                return;
+            }
 
             // search for element to modify
-            while(node != null && node.getValue() != modifyNode.getValue()) {
-                if(node.compareTo(modifyNode) >= 1) {
-                    node = node.getLeftChild();
+            while(tree != null && tree.value().getValue() != modifyNode.getValue()) {
+                if(tree.value().compareTo(modifyNode) >= 1) {
+                    tree = tree.left();
                 }
                 else {
-                    node = node.getRightChild();
+                    tree = tree.right();
                 }
             }
             
             // element to modify was not found
-            if(node == null) {
+            if(tree == null) {
                 return;
             }
             
             // modify element
-            delete(node.getValue());
+            delete(tree.value().getValue());
             modifyNode.setValue(newKey);
             insert(modifyNode.getValue());
         }
 
         public void delete(T key) {
             Node<T> deleteNode = new Node<>(key);
-            Node<T> node = this.rootNode;
-            Node<T> parent = null;
+            Tree<T> tree = this;
+            Tree<T> parent = null;
+
+            if(tree.value() == null) {
+                return;
+            }
 
             // search for element to delete (save parent element)
-            while(node != null && node.getValue() != deleteNode.getValue()) {
-                parent = node;
-                if(node.compareTo(deleteNode) >= 1) {
-                    node = node.getLeftChild();
+            while(tree != null && tree.value().getValue() != deleteNode.getValue()) {
+                parent = tree;
+                if(tree.value().compareTo(deleteNode) >= 1) {
+                    tree = tree.left();
                 }
                 else {
-                    node = node.getRightChild();
+                    tree = tree.right();
                 }
             }
 
             // element to delete was not found
-            if(node == null) {
+            if(tree == null) {
                 return;
             }
             
             // delete the selected element
-            if(node.getLeftChild() == null || node.getRightChild() == null) {
-                deleteNode(node, parent);
+            if(tree.left() == null || tree.right() == null) {
+                deleteNode(tree, parent);
             }
             else {
-                deleteNodeTwoChilds(node);
+                deleteNodeTwoChilds(tree);
             }
 
         }
@@ -189,40 +197,41 @@ public class Tree<T> {
         /**
          * max one child available - get available child and set it a level higher
          */
-        private void deleteNode(Node<T> node, Node<T> parent) {
-            Node<T> child = node.getLeftChild() != null ? node.getLeftChild() : node.getRightChild();
+        private void deleteNode(Tree<T> tree, Tree<T> parent) {
+            Node<T> child = tree.left() != null ? tree.left().value() : (tree.right() != null ? tree.right().value() : null) ;
           
-            if (node == this.rootNode) {
+            if (tree.value() == this.rootNode) {
               this.rootNode = child;
-            } else if (node.compareTo(parent) >= 1) {
-                parent.setRightChild(child);
+            } else if (tree.value().compareTo(parent.value()) >= 1) {
+                parent.value().setRightChild(child);
             } else {
-                parent.setLeftChild(child);
+                parent.value().setLeftChild(child);
             }
         }
 
         /**
          * find minimum node of right childtree
          */
-        private void deleteNodeTwoChilds(Node<T> node) {
+        private void deleteNodeTwoChilds(Tree<T> tree) {
             // Find minimum node of right childtree
-            Node<T> newNode = node.getRightChild();
-            Node<T> newNodeParent = node;
-            while (newNode.getLeftChild() != null) {
-                newNodeParent = newNode;
-                newNode = newNode.getLeftChild();
+            Tree<T> newTree = tree.right();
+            Tree<T> newTreeParent = tree;
+            while (newTree.left() != null) {
+                newTreeParent = newTree;
+                newTree = newTree.left();
             }
           
             // write new key to deleting element
-            node.setValue(newNode.getValue());
-          
+            tree.value().setValue(newTree.value().getValue());
+
+            Node<T> node = newTree.right() != null ? newTree.right().value() : null;
             // replacing element was right child
-            if (newNode.compareTo(node.getRightChild()) == 0) {
-                node.setRightChild(newNode.getRightChild());
+            if (newTree.value().compareTo(tree.right().value()) == 0) {
+                tree.value().setRightChild(node);
             }
             else {
                 // if there is a subtree (only right) from minimum of right childtree
-                newNodeParent.setLeftChild(newNode.getRightChild());
+                newTreeParent.value().setLeftChild(node);
             }
         }
 
