@@ -89,6 +89,7 @@ public class Tree<T> {
          * wrapper to start recursive function
          */
         public void inOrder() {
+            System.out.println("root element" + this.rootNode.getValue());
             inOrder(this);
         }
 
@@ -202,9 +203,12 @@ public class Tree<T> {
             
             // delete the selected element
             if(tree.left() == null || tree.right() == null) {
+                System.out.println("delete node" + tree.getRootNode().getValue());
                 deleteNode(tree, parent);
+                
             }
             else {
+                System.out.println("delete node with two parents" + tree.getRootNode().getValue());
                 deleteNodeTwoChilds(tree);
             }
 
@@ -215,16 +219,22 @@ public class Tree<T> {
          */
         private void deleteNode(Tree<T> tree, Tree<T> parent) {
             Node<T> child = tree.left() != null ? tree.left().value() : (tree.right() != null ? tree.right().value() : null) ;
-          
+            
+
+            
             if (tree.value() == this.rootNode) {
-              this.rootNode = child;
+                this.rootNode = child;
             } else if (tree.value().compareTo(parent.value()) >= 1) {
                 parent.value().setRightChild(child);
             } else {
                 parent.value().setLeftChild(child);
             }
+            
+            if (parent.getRootNode() != null) {
+                rebalance(parent.getRootNode());
+            }
         }
-
+        
         /**
          * find minimum node of right childtree
          */
@@ -244,11 +254,18 @@ public class Tree<T> {
             // replacing element was right child
             if (newTree.value().compareTo(tree.right().value()) == 0) {
                 tree.value().setRightChild(node);
+                System.out.println("starting rebalance at " + tree.value());
+                rebalance(tree.value());
             }
             else {
                 // if there is a subtree (only right) from minimum of right childtree
                 newTreeParent.value().setLeftChild(node);
+                System.out.println("starting rebalance at " + tree.value());
+                rebalance(newTreeParent.value());
             }
+
+           
+          
         }
 
         @Override
@@ -288,7 +305,7 @@ public class Tree<T> {
 
         private void rebalance(Node<T> startingNode) {
             // after inserting an element, go from that node upward and check if a tree has a balance <= -2 or >=2
-            Node<T> parentNode = startingNode.getParent();
+            Node<T> parentNode = startingNode;
             while(parentNode != null) {
                 int balance = this.getBalance(new Tree<T>(parentNode));
 
@@ -305,11 +322,12 @@ public class Tree<T> {
 
                         leftRotation(parentNode.getRightChild(), ParentNodePosition.RIGHTCHILD);
                     } else {
-
-
                         System.out.println("right then left rotation");
-                        leftRotation(rightChild.getLeftChild(), ParentNodePosition.RIGHTCHILD);
-                        // rightRotation(rightChild.getLeftChild(), ParentNodePosition.RIGHTCHILD);
+
+                        Node<T> nodeToRotateAround = rightChild.getLeftChild();
+
+                        rightRotation(nodeToRotateAround, ParentNodePosition.RIGHTCHILD);
+                        leftRotation(nodeToRotateAround, ParentNodePosition.RIGHTCHILD);
                     }
 
                    return;
@@ -320,8 +338,10 @@ public class Tree<T> {
                     Node<T> leftChild = parentNode.getLeftChild();
                     if (this.getBalance(new Tree<T>(leftChild)) == -1) {
                         System.out.println("left then right rotation");
-                        leftRotation(leftChild.getRightChild(), ParentNodePosition.LEFTCHILD);
-                        // rightRotation(parentNode.getRightChild(), ParentNodePosition.LEFTCHILD);
+                        Node<T> nodeToRotateAround = leftChild.getRightChild();
+
+                        leftRotation(nodeToRotateAround, ParentNodePosition.LEFTCHILD);
+                        rightRotation(nodeToRotateAround, ParentNodePosition.LEFTCHILD);
                     } else {
                         System.out.println("simple right rotation");
                         rightRotation(parentNode.getLeftChild(), ParentNodePosition.LEFTCHILD);
@@ -355,71 +375,89 @@ public class Tree<T> {
 
 
         private void rightRotation(Node<T> node, ParentNodePosition parentNodePosition) {
-            if (node.getParent().getParent() != null) {
-                if(parentNodePosition == ParentNodePosition.LEFTCHILD) {
-                    node.getParent().getParent().setLeftChild(node);
+           Node<T> upperNode = node.getParent();
+           Node<T> rightChildNode = node.getRightChild();
+
+           Node<T> upperupperNode = node.getParent().getParent();
+
+           if (upperupperNode != null) {
+
+                // determine if left or right child has to be changed
+                if (upperupperNode.getRightChild() != null && upperupperNode.getRightChild().equals(upperNode)) {
+                    upperupperNode.setRightChild(node);
                 }
 
-                if (parentNodePosition == ParentNodePosition.RIGHTCHILD) {
-                    node.getParent().getParent().setRightChild(node);
+                if (upperupperNode.getLeftChild() != null && upperupperNode.getLeftChild().equals(upperNode)) {
+                    upperupperNode.setLeftChild(node);
                 }
-
             }
-            
-            
-            Node<T> previousRight = node.getRightChild();
-            node.setRightChild(node.getParent());
-            if (this.rootNode.equals(node.getParent())) {
+
+            node.setRightChild(upperNode);
+
+            if (this.rootNode.equals(upperNode)) {
                 this.rootNode = node;
                 this.rootNode.setParent(null);
             }
 
-            if (previousRight != null) {
-                node.getRightChild().setLeftChild(previousRight);
+            if (rightChildNode != null) {
+                upperNode.setLeftChild(rightChildNode);
             } else {
-                node.getRightChild().setLeftChild(null);
+                upperNode.setLeftChild(null);
             }
+
+            System.out.println("right rotation end");
+            node.printNode();
+            node.getRightChild().printNode();
+            if (node.getLeftChild() != null) {
+                System.out.println("left c hild exists");
+                node.getLeftChild().printNode();
+            }
+
+            this.rootNode.printNode();
+
+
         }
 
         private void leftRotation(Node<T> node, ParentNodePosition parentNodePosition) {
-            // simple left rotation
-            // has the node a parent element
-            System.out.println("start left rotation");
-            node.printNode();
-            System.out.println(parentNodePosition);
+           Node<T> upperNode = node.getParent();
+           Node<T> leftChildNode = node.getLeftChild();
 
-            if (node.getParent().getParent() != null) {
-                if (parentNodePosition == ParentNodePosition.LEFTCHILD) {
-                    System.out.println("in root left child");
-                    node.getParent().getParent().setLeftChild(node);
+           
+           Node<T> upperupperNode = node.getParent().getParent();
+           if (upperupperNode != null) {
+
+                 // determine if left or right child has to be changed
+                 if (upperupperNode.getRightChild() != null && upperupperNode.getRightChild().equals(upperNode)) {
+                    upperupperNode.setRightChild(node);
                 }
 
-                if (parentNodePosition == ParentNodePosition.RIGHTCHILD) {
-                    node.getParent().getParent().setRightChild(node);
+                if (upperupperNode.getLeftChild() != null && upperupperNode.getLeftChild().equals(upperNode)) {
+                    upperupperNode.setLeftChild(node);
                 }
             }
-
-            Node<T> previousLeft = node.getLeftChild();
-
-            node.setLeftChild(node.getParent());
-
-            System.out.println("root node");
-            this.rootNode.printNode();
-            System.out.println("node parent");
-            node.getParent().printNode();
-
-            if (this.rootNode.equals(node.getParent())) {
-                System.out.println("rootnode equals parent");
+            
+            node.setLeftChild(upperNode);
+            
+            if(this.rootNode.equals(upperNode)) {
                 this.rootNode = node;
                 this.rootNode.setParent(null);
             }
 
-            if (previousLeft!= null) {
-                node.getLeftChild().setRightChild(previousLeft);
+            if (leftChildNode != null) {
+                upperNode.setRightChild(leftChildNode);
             } else {
-                node.getLeftChild().setRightChild(null);
+                upperNode.setRightChild(null);
             }
 
+            System.out.println("left rotation end");
+            node.printNode();
+            node.getLeftChild().printNode();
+            if (node.getRightChild() != null) {
+                System.out.println("right child exists");
+                node.getRightChild().printNode();
+            }
+
+            this.rootNode.printNode();
 
         }
 

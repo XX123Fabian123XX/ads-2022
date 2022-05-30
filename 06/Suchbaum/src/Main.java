@@ -12,11 +12,23 @@ public class Main {
         System.out.println("m: modify node");
         System.out.println("P: preorder");
         System.out.println("I: inorder");
-        // searchTree.insert(1);
-        // searchTree.insert(-10);
-        // searchTree.insert(6); 
-        // searchTree.insert(8);
-        // searchTree.insert(9);
+
+        int[] randomNumbers = new int[200];
+
+        for(int i = 0; i < randomNumbers.length; i++) {
+            randomNumbers[i] += Math.floor(Math.random() * 1000000);
+            System.out.println(randomNumbers[i]);
+            searchTree.insert(randomNumbers[i]);
+        }
+
+        for(int i = 0; i < 20; i++) {
+            searchTree.modify(randomNumbers[i], (int) Math.floor(Math.random() * 1000000) + 200000 );
+        }
+
+
+
+
+        
         
         while(true) {
             System.out.println("\nPlease enter the action");
