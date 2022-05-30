@@ -315,19 +315,16 @@ public class Tree<T> {
                     // check if right or left rotation has to be done
                     Node<T> rightChild = parentNode.getRightChild();
                     if (this.getBalance(new Tree<T>(rightChild)) == -1) {
-
-
+                        
                         System.out.println("simple left rotation");
-
-
-                        leftRotation(parentNode.getRightChild(), ParentNodePosition.RIGHTCHILD);
+                        leftRotation(parentNode.getRightChild());
                     } else {
                         System.out.println("right then left rotation");
 
                         Node<T> nodeToRotateAround = rightChild.getLeftChild();
 
-                        rightRotation(nodeToRotateAround, ParentNodePosition.RIGHTCHILD);
-                        leftRotation(nodeToRotateAround, ParentNodePosition.RIGHTCHILD);
+                        rightRotation(nodeToRotateAround);
+                        leftRotation(nodeToRotateAround);
                     }
 
                    return;
@@ -340,11 +337,11 @@ public class Tree<T> {
                         System.out.println("left then right rotation");
                         Node<T> nodeToRotateAround = leftChild.getRightChild();
 
-                        leftRotation(nodeToRotateAround, ParentNodePosition.LEFTCHILD);
-                        rightRotation(nodeToRotateAround, ParentNodePosition.LEFTCHILD);
+                        leftRotation(nodeToRotateAround);
+                        rightRotation(nodeToRotateAround);
                     } else {
                         System.out.println("simple right rotation");
-                        rightRotation(parentNode.getLeftChild(), ParentNodePosition.LEFTCHILD);
+                        rightRotation(parentNode.getLeftChild());
                     }
                     return;
                     
@@ -352,29 +349,9 @@ public class Tree<T> {
                 parentNode = parentNode.getParent();
                 
             }
-
-
-
-
-            // get that node
-
-            // then check what kind of rotation has to be applied
-            // left heavy -> right, left right
-
-
-            // right heavy -> left, right left
-            
-
-
-
-        }
-        private enum ParentNodePosition {
-            LEFTCHILD,
-            RIGHTCHILD
         }
 
-
-        private void rightRotation(Node<T> node, ParentNodePosition parentNodePosition) {
+        private void rightRotation(Node<T> node) {
            Node<T> upperNode = node.getParent();
            Node<T> rightChildNode = node.getRightChild();
 
@@ -405,23 +382,11 @@ public class Tree<T> {
                 upperNode.setLeftChild(null);
             }
 
-            System.out.println("right rotation end");
-            node.printNode();
-            node.getRightChild().printNode();
-            if (node.getLeftChild() != null) {
-                System.out.println("left c hild exists");
-                node.getLeftChild().printNode();
-            }
-
-            this.rootNode.printNode();
-
-
         }
 
-        private void leftRotation(Node<T> node, ParentNodePosition parentNodePosition) {
+        private void leftRotation(Node<T> node) {
            Node<T> upperNode = node.getParent();
            Node<T> leftChildNode = node.getLeftChild();
-
            
            Node<T> upperupperNode = node.getParent().getParent();
            if (upperupperNode != null) {
@@ -449,15 +414,6 @@ public class Tree<T> {
                 upperNode.setRightChild(null);
             }
 
-            System.out.println("left rotation end");
-            node.printNode();
-            node.getLeftChild().printNode();
-            if (node.getRightChild() != null) {
-                System.out.println("right child exists");
-                node.getRightChild().printNode();
-            }
-
-            this.rootNode.printNode();
 
         }
 

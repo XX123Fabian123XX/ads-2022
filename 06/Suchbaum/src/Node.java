@@ -67,8 +67,9 @@ public class Node<T> implements Comparable<Node<T>> {
     }
 
     public int compareTo(Node<T> node) {
-        Integer first = (Integer) this.value;
-        Integer second = (Integer) node.getValue();
+        // return this.compareTo(node);
+        String first = (String) this.value;
+        String second = (String) node.getValue();
         return first.compareTo(second);
     }
 
