@@ -120,7 +120,7 @@ public class Tree<T> {
                 if(tree.value().compareTo(newNode) <= -1) {
                     if(tree.right() == null) {
                         tree.value().setRightChild(newNode);
-                        rebalance(newNode);
+                        rebalance(new Tree<T>(newNode));
                         return;
                     }
                     else {
@@ -130,7 +130,7 @@ public class Tree<T> {
                 else if(tree.value().compareTo(newNode) >= 1) {
                     if(tree.left() == null) {
                         tree.value().setLeftChild(newNode);
-                        rebalance(newNode);
+                        rebalance(new Tree<T>(newNode));
                         return;
                     }
                     else {
@@ -231,7 +231,7 @@ public class Tree<T> {
             }
             
             if (parent.getRootNode() != null) {
-                rebalance(parent.getRootNode());
+                rebalance(new Tree<T>(parent.getRootNode()));
             }
         }
         
@@ -255,13 +255,13 @@ public class Tree<T> {
             if (newTree.value().compareTo(tree.right().value()) == 0) {
                 tree.value().setRightChild(node);
                 System.out.println("starting rebalance at " + tree.value());
-                rebalance(tree.value());
+                rebalance(new Tree<>(tree.value()));
             }
             else {
                 // if there is a subtree (only right) from minimum of right childtree
                 newTreeParent.value().setLeftChild(node);
                 System.out.println("starting rebalance at " + tree.value());
-                rebalance(newTreeParent.value());
+                rebalance(new Tree<T>(newTreeParent.value()));
             }
 
            
@@ -303,9 +303,9 @@ public class Tree<T> {
 
 
 
-        private void rebalance(Node<T> startingNode) {
+        private void rebalance(Tree<T> startingTree) {
             // after inserting an element, go from that node upward and check if a tree has a balance <= -2 or >=2
-            Node<T> parentNode = startingNode;
+            Node<T> parentNode = startingTree.value();
             while(parentNode != null) {
                 int balance = this.getBalance(new Tree<T>(parentNode));
 
