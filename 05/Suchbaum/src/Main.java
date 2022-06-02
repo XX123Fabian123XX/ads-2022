@@ -12,6 +12,9 @@ public class Main {
         System.out.println("m: modify node");
         System.out.println("P: preorder");
         System.out.println("I: inorder");
+        searchTree.insert(50);
+        searchTree.insert(25);
+        searchTree.insert(75);
         searchTree.insert(13);
         searchTree.insert(10);
         searchTree.insert(37); // exclude for showing
