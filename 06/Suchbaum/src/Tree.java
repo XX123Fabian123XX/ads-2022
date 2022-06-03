@@ -56,7 +56,7 @@ public class Tree<T> {
         }
 
         private void preOrder(Tree<T> tree) {
-            if(tree == null) {
+            if(tree == null || tree.value() == null) {
                 return;
             }
             printDetails(tree);
@@ -78,7 +78,7 @@ public class Tree<T> {
         }
 
         private void inOrder(Tree<T> tree) {
-            if(tree == null)
+            if(tree == null || tree.value() == null)
                 return;
             inOrder(tree.left());
             printDetails(tree);
@@ -89,7 +89,6 @@ public class Tree<T> {
          * wrapper to start recursive function
          */
         public void inOrder() {
-            System.out.println("root element" + this.rootNode.getValue());
             inOrder(this);
         }
 
@@ -156,7 +155,7 @@ public class Tree<T> {
             }
 
             // search for element to modify
-            while(tree != null && tree.value().getValue() != modifyNode.getValue()) {
+            while(tree != null && !tree.value().getValue().equals(modifyNode.getValue())) {
                 if(tree.value().compareTo(modifyNode) >= 1) {
                     tree = tree.left();
                 }
@@ -186,7 +185,7 @@ public class Tree<T> {
             }
 
             // search for element to delete (save parent element)
-            while(tree != null && tree.value().getValue() != deleteNode.getValue()) {
+            while(tree != null && !tree.value().getValue().equals(deleteNode.getValue())) {
                 parent = tree;
                 if(tree.value().compareTo(deleteNode) >= 1) {
                     tree = tree.left();
@@ -301,8 +300,6 @@ public class Tree<T> {
 
         }
 
-
-
         private void rebalance(Tree<T> startingTree) {
             // after inserting an element, go from that node upward and check if a tree has a balance <= -2 or >=2
             Node<T> parentNode = startingTree.value();
@@ -314,19 +311,18 @@ public class Tree<T> {
                     System.out.println("right heavy");
                     // check if right or left rotation has to be done
                     Node<T> rightChild = parentNode.getRightChild();
-                    if (this.getBalance(new Tree<T>(rightChild)) == -1) {
-                        
-                        System.out.println("simple left rotation");
-                        leftRotation(parentNode.getRightChild());
-                    } else {
+                    if (this.getBalance(new Tree<T>(rightChild)) == 1) {
                         System.out.println("right then left rotation");
-
+                        
                         Node<T> nodeToRotateAround = rightChild.getLeftChild();
-
+                        
                         rightRotation(nodeToRotateAround);
-                        leftRotation(nodeToRotateAround);
+                        leftRotation(nodeToRotateAround);    
+                    } else {
+                        leftRotation(parentNode.getRightChild());
+                        System.out.println("simple left rotation");
                     }
-
+                                            
                    return;
                 }
                 // leftheavy
